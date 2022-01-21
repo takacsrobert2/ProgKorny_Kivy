@@ -1,0 +1,4 @@
+test1@test1.com;b444ac06613fc8d63795be9ad0beaf55011936ac;test1;2022-01-20
+rob@rob.com;7e09c9d3e96378bf549fc283fd6e1e5b7014cc33;rob;2022-01-21
+namosttuti@namosttuti.hu;4a97e4cb03fdb74b404823ebbedb07598379aa32;namosttuti;2022-01-21
+teszti2@teszti2.com;782af3f1e1339d77fa5915b8ebb0c744f0a95a87;teszti2;2022-01-21
