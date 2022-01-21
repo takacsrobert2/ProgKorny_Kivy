@@ -2,30 +2,30 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.label import Label
 from kivy.properties import ObjectProperty
-from kivy.uix.popup import Popup
+from kivy.uix.popup import Popup  #Előugró ablakos üzenetekhez
 from kivy.uix.screenmanager import ScreenManager, Screen
 
 
 from database import DataB
 
 
-class CreateAccountWindow(Screen):
+class CreateAccountWindow(Screen):  #Regisztrációs oldal
     username = ObjectProperty(None)
     email = ObjectProperty(None)
     password = ObjectProperty(None)
 
-    def login(self):
+    def login(self):  #Ha van fiókunk, ezzel visszatérhetünk a bejelentkező oldalra
         self.reset()
         sm.current = "login"
 
-    def submit(self):
+    def submit(self):  #Ellenőrzi, hogy a megadott paraméterek megfelelőek e
         if self.username.text != "" and self.email.text != "" and self.email.text.count("@") == 1 and \
                 self.email.text.count(".") > 0:
 
             if self.password != "":
                 db.add_user(self.email.text, self.password.text, self.username.text)
                 self.reset()
-                sm.current = "login"
+                sm.current = "login"  #Visszadob a bejelentkező ablakra
             else:
                 pop_message('Hiba regisztráció közben!', 'Kérlek adj meg érvényes adatokat!')
         else:
@@ -37,7 +37,7 @@ class CreateAccountWindow(Screen):
         self.username.text = ""
 
 
-class LoginWindow(Screen):
+class LoginWindow(Screen):  #Bejelentkező oldal
     email = ObjectProperty(None)
     password = ObjectProperty(None)
 
@@ -45,7 +45,7 @@ class LoginWindow(Screen):
         self.reset()
         sm.current = "create"
 
-    def login_button(self):
+    def login_button(self): #Ellenőrzi hogy megfelelőek e az inputok, és eltárolja azokat
         if db.validate_user(self.email.text, self.password.text):
             AccountWindow.current = self.email.text
             ModifyAccountWindow.current = self.email.text
@@ -59,7 +59,7 @@ class LoginWindow(Screen):
         self.password.text = ""
 
 
-class AccountWindow(Screen):
+class AccountWindow(Screen):  #Fiók ablak
     username = ObjectProperty(None)
     created = ObjectProperty(None)
     email = ObjectProperty(None)
@@ -75,13 +75,13 @@ class AccountWindow(Screen):
         sm.current = "login"
         pop_message('Vissza a bejelentkezéshez', 'Sikeres kijelentkezés!')
 
-    def delete_account(self):
+    def delete_account(self):  #Törli az éppen bejelentkezett fiókot, és visszakerülünk a bejelentkezési ablakhoz
         db.remove_user(self.current)
         sm.current = "login"
         pop_message('Vissza a bejelentkezéshez', 'Fiókod sikeresen töröltük!')
 
 
-class ModifyAccountWindow(Screen):
+class ModifyAccountWindow(Screen):  #Fiók adatok változtatására szolgáló ablak
     username = ObjectProperty(None)
     created = ObjectProperty(None)
     email = ObjectProperty(None)
@@ -91,7 +91,7 @@ class ModifyAccountWindow(Screen):
         self.reset()
         sm.current = "account"
 
-    def submit_modification(self):
+    def submit_modification(self):  #Ellenőrzi, hogy megfelelőek e az adatok
         if self.username.text != "" and self.email.text != "" and self.email.text.count(
                 "@") == 1 and self.email.text.count(".") > 0:
             if self.password != "":
@@ -121,10 +121,10 @@ def pop_message(title, message):
     pop.open()
 
 
-kv = Builder.load_file("authentication.kv")
+kv = Builder.load_file("authentication.kv") #A kv. file beolvasása
 
 sm = WindowManager()
-db = DataB("users.txt")
+db = DataB("users.txt") #Adatbázis pédányosítás
 
 screens = [LoginWindow(name="login"), CreateAccountWindow(name="create"), AccountWindow(name="account"),
            ModifyAccountWindow(name="modify")]
